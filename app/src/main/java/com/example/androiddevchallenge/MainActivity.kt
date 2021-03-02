@@ -20,11 +20,26 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Button
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -40,7 +55,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.NavType
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
 class MainActivity : AppCompatActivity() {
@@ -57,8 +76,8 @@ class MainActivity : AppCompatActivity() {
 
 private val petList = mutableListOf<Pet>()
 
-//private var adoptList = mutableStateOf(mutableListOf<Int>())
-//private val adoptList by remember { mutableStateOf(listOf<Int>()) }
+// private var adoptList = mutableStateOf(mutableListOf<Int>())
+// private val adoptList by remember { mutableStateOf(listOf<Int>()) }
 
 fun loadData() {
     val imgList = listOf(R.mipmap.pic_1, R.mipmap.pic_2, R.mipmap.pic_3, R.mipmap.pic_4)
@@ -92,34 +111,36 @@ fun MyApp() {
                     val petIndex = entry.arguments?.getInt("pet_id") ?: 0
                     PetDetailsPage(petIndex, controller, petViewModel)
                 }
-            })
-
+            }
+        )
     }
 }
 //
-//@Preview("Light Theme", widthDp = 360, heightDp = 640)
-//@Composable
-//fun LightPreview() {
+// @Preview("Light Theme", widthDp = 360, heightDp = 640)
+// @Composable
+// fun LightPreview() {
 //    MyTheme {
 //        MyApp()
 //    }
-//}
+// }
 //
-//@Preview("Dark Theme", widthDp = 360, heightDp = 640)
-//@Composable
-//fun DarkPreview() {
+// @Preview("Dark Theme", widthDp = 360, heightDp = 640)
+// @Composable
+// fun DarkPreview() {
 //    MyTheme(darkTheme = true) {
 //        MyApp()
 //    }
-//}
+// }
 
 @Composable
 fun ListPage(petList: List<Pet>, navController: NavController) {
-    LazyColumn(content = {
-        items(petList) { pet ->
-            ItemPet(pet, navController)
+    LazyColumn(
+        content = {
+            items(petList) { pet ->
+                ItemPet(pet, navController)
+            }
         }
-    })
+    )
 }
 
 @Composable
@@ -215,9 +236,11 @@ fun PetDetailsPage(id: Int, navController: NavController, petVm: PetViewModel = 
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(onClick = {
-                petVm.adp(pet = pet)
-            }) {
+            Button(
+                onClick = {
+                    petVm.adp(pet = pet)
+                }
+            ) {
                 if (isAdopted) {
                     Text(text = "Adopted")
                 } else {
@@ -236,8 +259,6 @@ fun PetDetailsPage(id: Int, navController: NavController, petVm: PetViewModel = 
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(text = pet.desc.repeat(30))
         }
-
-
     }
 }
 
